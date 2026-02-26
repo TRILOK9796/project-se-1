@@ -1,0 +1,101 @@
+const mongoose = require('mongoose');
+
+const productSchema = new mongoose.Schema({
+  farmer_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Farmer',
+    required: true
+  },
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['Vegetables', 'Fruits', 'Dairy', 'Grains', 'Herbs', 'Other']
+  },
+  subcategory: String,
+  price: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  unit: {
+    type: String,
+    enum: ['kg', 'liter', 'piece', 'dozen', 'bundle'],
+    required: true
+  },
+  quantity_available: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  quantity_sold: {
+    type: Number,
+    default: 0
+  },
+  min_order_quantity: {
+    type: Number,
+    default: 1
+  },
+  max_order_quantity: {
+    type: Number,
+    default: 100
+  },
+  image_url: {
+    type: String,
+    required: true
+  },
+  images: [String],
+  is_organic: {
+    type: Boolean,
+    default: false
+  },
+  is_seasonal: {
+    type: Boolean,
+    default: false
+  },
+  harvest_date: Date,
+  expiry_date: Date,
+  rating: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 5
+  },
+  total_reviews: {
+    type: Number,
+    default: 0
+  },
+  total_orders: {
+    type: Number,
+    default: 0
+  },
+  is_active: {
+    type: Boolean,
+    default: true
+  },
+  tags: [String],
+  created_at: {
+    type: Date,
+    default: Date.now
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Create search index
+productSchema.index({ name: 'text', description: 'text' });
+productSchema.index({ farmer_id: 1 });
+productSchema.index({ category: 1 });
+productSchema.index({ is_active: 1 });
+
+module.exports = mongoose.model('Product', productSchema);
