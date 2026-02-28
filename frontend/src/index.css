@@ -111,10 +111,6 @@ body {
     @apply badge bg-red-100 text-red-700;
   }
 
-  .text-center {
-    @apply text-center;
-  }
-
   .flex-center {
     @apply flex items-center justify-center;
   }

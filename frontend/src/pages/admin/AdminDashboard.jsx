@@ -1,69 +1,16 @@
 import React, { useState } from 'react';
-import { FaUsers, FaShoppingCart, FaMoneyBillWave, FaTruck, FaChartBar } from 'react-icons/fa';
+import { FaUsers, FaShoppingCart, FaMoneyBillWave, FaTruck } from 'react-icons/fa';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import DemoNotice from '../../components/DemoNotice';
+import { mockRevenueData, mockOrderData, mockCategoryData, mockStats } from '../../utils/mockData';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Sample data for charts
-  const revenueData = [
-    { name: 'Jan', revenue: 45000 },
-    { name: 'Feb', revenue: 52000 },
-    { name: 'Mar', revenue: 48000 },
-    { name: 'Apr', revenue: 61000 },
-    { name: 'May', revenue: 55000 },
-    { name: 'Jun', revenue: 70000 },
-  ];
-
-  const orderData = [
-    { name: 'Pending', value: 120, color: '#f59e0b' },
-    { name: 'Confirmed', value: 450, color: '#3b82f6' },
-    { name: 'In Transit', value: 280, color: '#10b981' },
-    { name: 'Delivered', value: 1850, color: '#06b6d4' },
-  ];
-
-  const categoryData = [
-    { name: 'Vegetables', orders: 450 },
-    { name: 'Fruits', orders: 380 },
-    { name: 'Dairy', orders: 290 },
-    { name: 'Grains', orders: 210 },
-    { name: 'Herbs', orders: 160 },
-  ];
-
-  const stats = [
-    {
-      label: 'Total Users',
-      value: '2,450',
-      icon: FaUsers,
-      color: 'primary',
-      change: '+12.5%'
-    },
-    {
-      label: 'Total Orders',
-      value: '2,700',
-      icon: FaShoppingCart,
-      color: 'blue',
-      change: '+8.2%'
-    },
-    {
-      label: 'Revenue',
-      value: '₹3.2L',
-      icon: FaMoneyBillWave,
-      color: 'green',
-      change: '+15.3%'
-    },
-    {
-      label: 'Active Deliveries',
-      value: '280',
-      icon: FaTruck,
-      color: 'yellow',
-      change: '+5.1%'
-    },
-  ];
-
   return (
     <div className="section-padding bg-neutral-50 min-h-screen">
       <div className="container-custom">
+        <DemoNotice />
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">Admin Dashboard</h1>
           <button className="btn btn-primary">Export Report</button>
@@ -91,8 +38,11 @@ const AdminDashboard = () => {
           <>
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
+              {mockStats.map((stat, index) => {
+                let Icon = FaUsers;
+                if (stat.label === 'Total Orders') Icon = FaShoppingCart;
+                else if (stat.label === 'Revenue') Icon = FaMoneyBillWave;
+                else if (stat.label === 'Active Deliveries') Icon = FaTruck;
                 return (
                   <div key={index} className="card">
                     <div className="flex items-center justify-between mb-4">
@@ -114,7 +64,7 @@ const AdminDashboard = () => {
               <div className="card">
                 <h3 className="text-xl font-bold mb-4">Revenue Trend</h3>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={revenueData}>
+                  <LineChart data={mockRevenueData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
@@ -137,13 +87,13 @@ const AdminDashboard = () => {
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={orderData}
+                      data={mockOrderData}
                       innerRadius={60}
                       outerRadius={100}
                       paddingAngle={5}
                       dataKey="value"
                     >
-                      {orderData.map((entry, index) => (
+                      {mockOrderData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -151,7 +101,7 @@ const AdminDashboard = () => {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="mt-4 space-y-2">
-                  {orderData.map((item) => (
+                  {mockOrderData.map((item) => (
                     <div key={item.name} className="flex items-center gap-2">
                       <div
                         className="w-3 h-3 rounded-full"
@@ -168,7 +118,7 @@ const AdminDashboard = () => {
             <div className="card">
               <h3 className="text-xl font-bold mb-4">Orders by Category</h3>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={categoryData}>
+                <BarChart data={mockCategoryData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />

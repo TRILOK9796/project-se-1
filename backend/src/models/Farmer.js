@@ -24,7 +24,8 @@ const farmerSchema = new mongoose.Schema({
     },
     coordinates: {
       type: [Number], // [longitude, latitude]
-      required: true
+      required: false,
+      default: [78.9, 20.5] // Default center of India
     }
   },
   address: {

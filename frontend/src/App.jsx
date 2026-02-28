@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './index.css';
@@ -15,6 +15,7 @@ import ProductsPage from './pages/ProductsPage';
 import CartPage from './pages/CartPage';
 import OrderTrackingPage from './pages/OrderTrackingPage';
 import NotFoundPage from './pages/NotFoundPage';
+import AddProductForm from './pages/farmer/AddProductForm';
 
 // Components
 import Navbar from './components/Navbar';
@@ -60,6 +61,10 @@ function App() {
             <Route
               path="/dashboard/farmer"
               element={<ProtectedRoute element={<FarmerDashboard />} requiredRole="farmer" />}
+            />
+            <Route
+              path="/farmer/add-product"
+              element={<ProtectedRoute element={<AddProductForm />} requiredRole="farmer" />}
             />
 
             {/* Delivery Partner Routes */}

@@ -6,6 +6,11 @@ const connectDB = require('./src/config/database');
 
 // Import routes
 const authRoutes = require('./src/routes/authRoutes');
+const productRoutes = require('./src/routes/productRoutes');
+const orderRoutes = require('./src/routes/orderRoutes');
+
+// Import middleware
+const errorHandler = require('./src/middleware/errorHandler');
 
 const app = express();
 
@@ -18,11 +23,13 @@ app.use(cors({
   origin: process.env.CORS_ORIGIN?.split(',') || 'http://localhost:3000',
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // API Routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/products', productRoutes);
+app.use('/api/v1/orders', orderRoutes);
 
 // Health Check Route
 app.get('/api/v1/health', (req, res) => {
@@ -41,14 +48,8 @@ app.use((req, res) => {
   });
 });
 
-// Error Handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || 'Internal Server Error'
-  });
-});
+// Global Error Handler (must be last)
+app.use(errorHandler);
 
 // Start Server
 const PORT = process.env.PORT || 5000;

@@ -31,6 +31,25 @@ const productSchema = new mongoose.Schema({
     enum: ['kg', 'liter', 'piece', 'dozen', 'bundle'],
     required: true
   },
+  weight: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  weight_unit: {
+    type: String,
+    enum: ['kg', 'g', 'liter', 'ml'],
+    default: 'kg'
+  },
+  quality: {
+    type: String,
+    enum: ['premium', 'standard', 'economy'],
+    default: 'standard'
+  },
+  specifications: {
+    type: String,
+    default: ''
+  },
   quantity_available: {
     type: Number,
     required: true,

@@ -21,6 +21,29 @@ const orderSchema = new mongoose.Schema({
     ref: 'DeliveryPartner',
     default: null
   },
+  accepted_at: {
+    type: Date,
+    default: null
+  },
+  accepted_by_partner_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'DeliveryPartner',
+    default: null
+  },
+  pickup_location: {
+    street: String,
+    city: String,
+    state: String,
+    pincode: String,
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point'
+      },
+      coordinates: [Number]
+    }
+  },
   items: [{
     _id: mongoose.Schema.Types.ObjectId,
     product_id: {

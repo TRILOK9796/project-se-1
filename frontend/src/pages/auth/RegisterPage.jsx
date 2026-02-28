@@ -1,33 +1,88 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaPhone, FaLock } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaLock, FaTruck, FaIdCard } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { registerStart, registerSuccess, registerFailure } from '../../redux/slices/authSlice';
+import { authAPI } from '../../utils/api';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [userType, setUserType] = useState('consumer');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    // Delivery partner fields
+    vehicle_type: 'bike',
+    vehicle_number: '',
+    license_number: ''
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
 
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
+    // Validate delivery partner fields
+    if (userType === 'delivery_partner') {
+      if (!formData.vehicle_number || !formData.license_number) {
+        setError('Please provide vehicle number and license number');
+        return;
+      }
+    }
+
+    dispatch(registerStart());
     setLoading(true);
-    // API call would go here
-    setTimeout(() => {
+
+    try {
+      const requestData = {
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        name: formData.name,
+        user_type: userType
+      };
+
+      // Add delivery partner fields if registering as delivery partner
+      if (userType === 'delivery_partner') {
+        requestData.vehicle_type = formData.vehicle_type;
+        requestData.vehicle_number = formData.vehicle_number;
+        requestData.license_number = formData.license_number;
+      }
+
+      const response = await authAPI.register(requestData);
+
+      if (response.success) {
+        dispatch(registerSuccess({
+          token: response.token,
+          user: response.user
+        }));
+        navigate('/');
+      } else {
+        setError(response.message || 'Registration failed');
+        dispatch(registerFailure(response.message || 'Registration failed'));
+      }
+    } catch (err) {
+      const errorMessage = err.message || 'Registration failed';
+      setError(errorMessage);
+      dispatch(registerFailure(errorMessage));
+    } finally {
       setLoading(false);
-      navigate('/login');
-    }, 1000);
+    }
   };
 
   const handleChange = (e) => {
@@ -38,6 +93,12 @@ const RegisterPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 py-12 px-4">
       <div className="card w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-8 text-gradient">Create Account</h2>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error}
+          </div>
+        )}
 
         {/* User Type Selection */}
         <div className="mb-6 p-4 bg-neutral-100 rounded-lg">
@@ -51,6 +112,7 @@ const RegisterPage = () => {
                   checked={userType === type}
                   onChange={(e) => setUserType(e.target.value)}
                   className="w-4 h-4"
+                  disabled={loading}
                 />
                 <span className="capitalize font-medium">{type === 'delivery_partner' ? 'Delivery Partner' : type}</span>
               </label>
@@ -71,6 +133,7 @@ const RegisterPage = () => {
                 className="input pl-10"
                 placeholder="John Doe"
                 required
+                disabled={loading}
               />
             </div>
           </div>
@@ -87,6 +150,7 @@ const RegisterPage = () => {
                 className="input pl-10"
                 placeholder="you@example.com"
                 required
+                disabled={loading}
               />
             </div>
           </div>
@@ -103,6 +167,7 @@ const RegisterPage = () => {
                 className="input pl-10"
                 placeholder="+91 98765 43210"
                 required
+                disabled={loading}
               />
             </div>
           </div>
@@ -119,6 +184,7 @@ const RegisterPage = () => {
                 className="input pl-10"
                 placeholder="••••••••"
                 required
+                disabled={loading}
               />
             </div>
           </div>
@@ -135,9 +201,67 @@ const RegisterPage = () => {
                 className="input pl-10"
                 placeholder="••••••••"
                 required
+                disabled={loading}
               />
             </div>
           </div>
+
+          {/* Delivery Partner Fields */}
+          {userType === 'delivery_partner' && (
+            <>
+              <div>
+                <label className="label">Vehicle Type</label>
+                <div className="relative">
+                  <FaTruck className="absolute left-3 top-3 text-neutral-400" />
+                  <select
+                    name="vehicle_type"
+                    value={formData.vehicle_type}
+                    onChange={handleChange}
+                    className="input pl-10"
+                    disabled={loading}
+                  >
+                    <option value="bike">Bike</option>
+                    <option value="car">Car</option>
+                    <option value="van">Van</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="label">Vehicle Number</label>
+                <div className="relative">
+                  <FaTruck className="absolute left-3 top-3 text-neutral-400" />
+                  <input
+                    type="text"
+                    name="vehicle_number"
+                    value={formData.vehicle_number}
+                    onChange={handleChange}
+                    className="input pl-10"
+                    placeholder="MH 01 AB 1234"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="label">License Number</label>
+                <div className="relative">
+                  <FaIdCard className="absolute left-3 top-3 text-neutral-400" />
+                  <input
+                    type="text"
+                    name="license_number"
+                    value={formData.license_number}
+                    onChange={handleChange}
+                    className="input pl-10"
+                    placeholder="DL123456789"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <button
             type="submit"

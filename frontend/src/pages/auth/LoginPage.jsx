@@ -1,23 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { loginStart, loginSuccess, loginFailure } from '../../redux/slices/authSlice';
+import { authAPI } from '../../utils/api';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    dispatch(loginStart());
     setLoading(true);
-    // API call would go here
-    setTimeout(() => {
+
+    try {
+      const response = await authAPI.login(formData.email, formData.password);
+      
+      if (response.success) {
+        dispatch(loginSuccess({
+          token: response.token,
+          user: response.user
+        }));
+        navigate('/');
+      } else {
+        setError(response.message || 'Login failed');
+        dispatch(loginFailure(response.message || 'Login failed'));
+      }
+    } catch (err) {
+      const errorMessage = err.message || 'Login failed';
+      setError(errorMessage);
+      dispatch(loginFailure(errorMessage));
+    } finally {
       setLoading(false);
-      navigate('/');
-    }, 1000);
+    }
   };
 
   const handleChange = (e) => {
@@ -28,6 +51,12 @@ const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 py-12 px-4">
       <div className="card w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-8 text-gradient">Welcome Back</h2>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -42,6 +71,7 @@ const LoginPage = () => {
                 className="input pl-10"
                 placeholder="you@example.com"
                 required
+                disabled={loading}
               />
             </div>
           </div>
@@ -58,6 +88,7 @@ const LoginPage = () => {
                 className="input pl-10"
                 placeholder="••••••••"
                 required
+                disabled={loading}
               />
             </div>
           </div>

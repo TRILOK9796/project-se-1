@@ -17,18 +17,18 @@ const Footer = () => {
               Direct to consumer delivery platform connecting farmers with urban customers.
             </p>
             <div className="flex gap-4 text-xl">
-              <a href="#" className="hover:text-primary-500 transition">
+              <button onClick={() => {}} className="hover:text-primary-500 transition" aria-label="Facebook">
                 <FaFacebook />
-              </a>
-              <a href="#" className="hover:text-primary-500 transition">
+              </button>
+              <button onClick={() => {}} className="hover:text-primary-500 transition" aria-label="Twitter">
                 <FaTwitter />
-              </a>
-              <a href="#" className="hover:text-primary-500 transition">
+              </button>
+              <button onClick={() => {}} className="hover:text-primary-500 transition" aria-label="Instagram">
                 <FaInstagram />
-              </a>
-              <a href="#" className="hover:text-primary-500 transition">
+              </button>
+              <button onClick={() => {}} className="hover:text-primary-500 transition" aria-label="LinkedIn">
                 <FaLinkedin />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -38,8 +38,8 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/" className="text-neutral-400 hover:text-primary-500 transition">Home</Link></li>
               <li><Link to="/products" className="text-neutral-400 hover:text-primary-500 transition">Products</Link></li>
-              <li><Link to="/about" className="text-neutral-400 hover:text-primary-500 transition">About Us</Link></li>
-              <li><Link to="/contact" className="text-neutral-400 hover:text-primary-500 transition">Contact</Link></li>
+              <li><a href="/about" className="text-neutral-400 hover:text-primary-500 transition">About Us</a></li>
+              <li><a href="/contact" className="text-neutral-400 hover:text-primary-500 transition">Contact</a></li>
             </ul>
           </div>
 
@@ -48,9 +48,9 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-4">For Farmers</h4>
             <ul className="space-y-2">
               <li><Link to="/register" className="text-neutral-400 hover:text-primary-500 transition">Register as Farmer</Link></li>
-              <li><a href="#" className="text-neutral-400 hover:text-primary-500 transition">How it Works</a></li>
-              <li><a href="#" className="text-neutral-400 hover:text-primary-500 transition">Pricing</a></li>
-              <li><a href="#" className="text-neutral-400 hover:text-primary-500 transition">Support</a></li>
+              <li><button onClick={() => {}} className="text-neutral-400 hover:text-primary-500 transition text-left">How it Works</button></li>
+              <li><button onClick={() => {}} className="text-neutral-400 hover:text-primary-500 transition text-left">Pricing</button></li>
+              <li><button onClick={() => {}} className="text-neutral-400 hover:text-primary-500 transition text-left">Support</button></li>
             </ul>
           </div>
 
@@ -81,9 +81,9 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center text-neutral-400 text-sm">
           <p>© {currentYear} FreshFarm. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-primary-500 transition">Privacy Policy</a>
-            <a href="#" className="hover:text-primary-500 transition">Terms of Service</a>
-            <a href="#" className="hover:text-primary-500 transition">Cookie Policy</a>
+            <button onClick={() => {}} className="hover:text-primary-500 transition">Privacy Policy</button>
+            <button onClick={() => {}} className="hover:text-primary-500 transition">Terms of Service</button>
+            <button onClick={() => {}} className="hover:text-primary-500 transition">Cookie Policy</button>
           </div>
         </div>
       </div>

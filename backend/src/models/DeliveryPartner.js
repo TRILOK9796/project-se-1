@@ -29,7 +29,10 @@ const deliveryPartnerSchema = new mongoose.Schema({
       enum: ['Point'],
       default: 'Point'
     },
-    coordinates: [Number]
+    coordinates: {
+      type: [Number],
+      default: [0, 0]
+    }
   },
   current_zone: String,
   availability_status: {

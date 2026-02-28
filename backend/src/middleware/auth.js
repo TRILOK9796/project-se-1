@@ -37,6 +37,7 @@ const authorizeRole = (...roles) => {
 };
 
 module.exports = {
+  protect: authMiddleware,
   authMiddleware,
   authorizeRole
 };

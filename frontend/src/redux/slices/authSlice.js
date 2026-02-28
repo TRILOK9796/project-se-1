@@ -1,11 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Demo mode - set to true to see dashboard without backend
+const DEMO_MODE = false;
+
 const initialState = {
-  isAuthenticated: !!localStorage.getItem('token'),
-  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
-  token: localStorage.getItem('token') || null,
+  isAuthenticated: DEMO_MODE ? true : !!localStorage.getItem('token'),
+  user: DEMO_MODE 
+    ? null 
+    : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null),
+  token: DEMO_MODE 
+    ? 'demo_token_for_testing' 
+    : (localStorage.getItem('token') || null),
   loading: false,
   error: null,
+  isDemo: DEMO_MODE,
 };
 
 const authSlice = createSlice({
@@ -23,6 +31,16 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem('token', action.payload.token);
       localStorage.setItem('user', JSON.stringify(action.payload.user));
+      // Save profile IDs to localStorage
+      if (action.payload.user.farmerId) {
+        localStorage.setItem('farmerId', action.payload.user.farmerId);
+      }
+      if (action.payload.user.consumerId) {
+        localStorage.setItem('consumerId', action.payload.user.consumerId);
+      }
+      if (action.payload.user.deliveryPartnerId) {
+        localStorage.setItem('deliveryPartnerId', action.payload.user.deliveryPartnerId);
+      }
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -36,6 +54,9 @@ const authSlice = createSlice({
       state.error = null;
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('farmerId');
+      localStorage.removeItem('consumerId');
+      localStorage.removeItem('deliveryPartnerId');
     },
     registerStart: (state) => {
       state.loading = true;
@@ -48,6 +69,16 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem('token', action.payload.token);
       localStorage.setItem('user', JSON.stringify(action.payload.user));
+      // Save profile IDs to localStorage
+      if (action.payload.user.farmerId) {
+        localStorage.setItem('farmerId', action.payload.user.farmerId);
+      }
+      if (action.payload.user.consumerId) {
+        localStorage.setItem('consumerId', action.payload.user.consumerId);
+      }
+      if (action.payload.user.deliveryPartnerId) {
+        localStorage.setItem('deliveryPartnerId', action.payload.user.deliveryPartnerId);
+      }
     },
     registerFailure: (state, action) => {
       state.loading = false;
