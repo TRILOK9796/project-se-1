@@ -28,9 +28,11 @@ const OrderTrackingPage = () => {
         } else if (response.data && response.data.length > 0) {
           setSelectedOrder(response.data[0]);
         }
+      } else {
+        setError(response.message || 'Failed to fetch orders');
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Error fetching orders');
     } finally {
       setLoading(false);
     }
@@ -203,6 +205,23 @@ const OrderTrackingPage = () => {
               </div>
 
               {/* Delivery Address */}
+              <div className="card mb-6">
+                <h3 className="font-bold mb-4">Pickup Location</h3>
+                <div className="text-sm">
+                  {selectedOrder.pickup_location ? (
+                    <>
+                      <p className="font-semibold">{selectedOrder.pickup_location.street || 'Farmer Location'}</p>
+                      <p className="text-neutral-600">
+                        {selectedOrder.pickup_location.city}, {selectedOrder.pickup_location.state}
+                      </p>
+                      <p className="text-neutral-600">Pincode: {selectedOrder.pickup_location.pincode}</p>
+                    </>
+                  ) : (
+                    <p className="text-neutral-600">No pickup location available</p>
+                  )}
+                </div>
+              </div>
+
               <div className="card mb-6">
                 <h3 className="font-bold mb-4">Delivery Address</h3>
                 <div className="text-sm">

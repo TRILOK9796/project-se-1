@@ -3,11 +3,12 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { productAPI } from '../utils/api';
 import { addToCart } from '../redux/slices/cartSlice';
-import { FaShoppingCart, FaStar, FaFilter, FaTimes, FaLeaf } from 'react-icons/fa';
+import { FaShoppingCart, FaStar, FaFilter, FaLeaf } from 'react-icons/fa';
 
 const ProductsPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -20,24 +21,21 @@ const ProductsPage = () => {
 
   const categories = ['Vegetables', 'Fruits', 'Dairy', 'Grains', 'Herbs', 'Other'];
 
+  /* ================= FETCH PRODUCTS ================= */
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
+
       const params = {
         page: currentPage,
         limit: 12
       };
 
-      if (selectedCategory) {
-        params.category = selectedCategory;
-      }
-
-      if (searchTerm) {
-        params.search = searchTerm;
-      }
+      if (selectedCategory) params.category = selectedCategory;
+      if (searchTerm) params.search = searchTerm;
 
       const response = await productAPI.getAllProducts(params);
-      
+
       if (response.success) {
         setProducts(response.data || []);
         setTotalPages(response.pages || 1);
@@ -55,9 +53,10 @@ const ProductsPage = () => {
     fetchProducts();
   }, [fetchProducts]);
 
+  /* ================= HANDLERS ================= */
+
   const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
+    setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
 
@@ -93,31 +92,36 @@ const ProductsPage = () => {
       category: product.category,
       image_url: product.image_url,
       farmer_id: product.farmer_id,
-      quantity: quantity,
+      quantity,
       quantity_available: product.quantity_available
     }));
 
-    // Reset quantity for this product
     setSelectedQuantities(prev => ({
       ...prev,
       [product._id]: 1
     }));
 
-    // Show success message
     alert('Added to cart!');
   };
 
   if (loading && products.length === 0) {
-    return <div className="section-padding text-center">Loading products...</div>;
+    return <div className="text-center py-20 text-lg">Loading products...</div>;
   }
 
+  /* ================= UI ================= */
+
   return (
-    <div className="section-padding">
+    <div className="bg-gradient-to-b from-green-50 to-white min-h-screen py-10">
       <div className="container-custom">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Fresh Farm Products</h1>
-          <p className="text-neutral-600">Browse and buy fresh products directly from farmers</p>
+
+        {/* HEADER */}
+        <div className="text-center mb-10">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-400 bg-clip-text text-transparent">
+            Fresh Farm Products
+          </h1>
+          <p className="text-neutral-600 mt-2 text-lg">
+            Buy directly from farmers — fresh & organic 🌱
+          </p>
         </div>
 
         {error && (
@@ -126,37 +130,35 @@ const ProductsPage = () => {
           </div>
         )}
 
-        {/* Search Bar */}
-        <div className="mb-8">
+        {/* SEARCH */}
+        <div className="mb-10">
           <input
             type="text"
-            placeholder="Search products by name..."
+            placeholder="🔎 Search fresh products..."
             value={searchTerm}
             onChange={handleSearch}
-            className="w-full px-6 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-6 py-4 rounded-xl border border-neutral-200 shadow-sm
+            focus:ring-2 focus:ring-green-400 outline-none text-lg"
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
-          <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
-            <div className="card sticky top-4">
-              <div className="flex justify-between items-center mb-4 lg:hidden">
-                <h3 className="font-bold">Filters</h3>
-                <button onClick={() => setShowFilters(false)}>
-                  <FaTimes />
-                </button>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
 
-              <h3 className="font-bold mb-4 hidden lg:block">Categories</h3>
+          {/* FILTER SIDEBAR */}
+          <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
+            <div className="bg-white rounded-2xl shadow-md p-6 sticky top-6">
+
+              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <FaFilter /> Categories
+              </h3>
 
               <div className="space-y-2">
                 <button
                   onClick={() => handleCategoryFilter('')}
-                  className={`w-full text-left px-4 py-2 rounded transition ${
+                  className={`w-full text-left px-4 py-2 rounded-lg ${
                     selectedCategory === ''
-                      ? 'bg-primary-600 text-white'
-                      : 'hover:bg-neutral-100'
+                      ? 'bg-green-600 text-white'
+                      : 'hover:bg-green-50'
                   }`}
                 >
                   All Categories
@@ -166,150 +168,134 @@ const ProductsPage = () => {
                   <button
                     key={category}
                     onClick={() => handleCategoryFilter(category)}
-                    className={`w-full text-left px-4 py-2 rounded transition ${
+                    className={`w-full text-left px-4 py-2 rounded-lg ${
                       selectedCategory === category
-                        ? 'bg-primary-600 text-white'
-                        : 'hover:bg-neutral-100'
+                        ? 'bg-green-600 text-white'
+                        : 'hover:bg-green-50'
                     }`}
                   >
                     {category}
                   </button>
                 ))}
               </div>
-
-              {selectedCategory && (
-                <button
-                  onClick={() => setSelectedCategory('')}
-                  className="w-full mt-4 text-sm text-primary-600 hover:text-primary-700 font-semibold"
-                >
-                  Clear Filter
-                </button>
-              )}
             </div>
           </div>
 
-          {/* Products Grid */}
+          {/* PRODUCTS */}
           <div className="lg:col-span-3">
-            {/* Filter Toggle for Mobile */}
+
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="lg:hidden mb-6 flex items-center gap-2 px-4 py-2 border border-neutral-300 rounded-lg"
+              className="lg:hidden mb-6 flex items-center gap-2 px-4 py-2 border rounded-lg"
             >
               <FaFilter /> Filters
             </button>
 
             {products.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-neutral-600 text-lg">No products found</p>
-                <button
-                  onClick={() => {
-                    setSearchTerm('');
-                    setSelectedCategory('');
-                  }}
-                  className="mt-4 text-primary-600 hover:text-primary-700 font-semibold"
-                >
-                  Clear Filters
-                </button>
+              <div className="text-center py-20 text-neutral-500 text-lg">
+                No products found
               </div>
             ) : (
               <>
-                {/* Products Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
                   {products.map(product => (
-                    <div key={product._id} className="card overflow-hidden hover:shadow-lg transition">
-                      {/* Product Image */}
-                      <div className="relative h-48 bg-neutral-200 overflow-hidden cursor-pointer"
-                           onClick={() => navigate(`/product/${product._id}`)}>
+                    <div
+                      key={product._id}
+                      className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden group"
+                    >
+
+                      {/* IMAGE */}
+                      <div
+                        className="relative h-52 overflow-hidden cursor-pointer"
+                        onClick={() => navigate(`/product/${product._id}`)}
+                      >
                         {product.image_url ? (
                           <img
                             src={product.image_url}
                             alt={product.name}
-                            className="w-full h-full object-cover hover:scale-110 transition duration-300"
+                            className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                           />
                         ) : (
                           <div className="flex items-center justify-center h-full bg-neutral-100">
-                            <FaLeaf className="text-4xl text-neutral-300" />
+                            <FaLeaf className="text-5xl text-neutral-300" />
                           </div>
                         )}
 
-                        {/* Category Badge */}
-                        <span className="absolute top-3 left-3 bg-primary-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        <span className="absolute top-3 left-3 bg-black/70 text-white px-3 py-1 rounded-full text-xs">
                           {product.category}
                         </span>
 
-                        {/* Organic Badge */}
                         {product.is_organic && (
-                          <span className="absolute top-3 right-3 bg-green-600 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                          <span className="absolute top-3 right-3 bg-green-600 text-white px-2 py-1 rounded-full text-xs flex items-center gap-1">
                             <FaLeaf /> Organic
                           </span>
                         )}
                       </div>
 
-                      {/* Content */}
-                      <div className="p-4">
-                        <h3 className="font-bold text-lg mb-1 h-12 overflow-hidden">
+                      {/* CONTENT */}
+                      <div className="p-5">
+
+                        <h3 className="font-bold text-lg mb-2 line-clamp-2">
                           {product.name}
                         </h3>
 
-                        {/* Rating */}
-                        <div className="flex items-center gap-1 mb-2">
+                        <div className="flex items-center gap-1 mb-2 text-sm">
                           <FaStar className="text-yellow-500" />
-                          <span className="font-semibold">{product.rating}/5</span>
-                          <span className="text-sm text-neutral-600">({product.total_reviews})</span>
+                          {product.rating}/5
+                          <span className="text-neutral-500">
+                            ({product.total_reviews})
+                          </span>
                         </div>
 
-                        {/* Product Info */}
-                        <div className="text-sm text-neutral-600 mb-3">
-                          <p>{product.weight} {product.weight_unit} • {product.quality}</p>
-                          <p className="text-xs">Quantity: {product.quantity_available} {product.unit} available</p>
+                        <p className="text-sm text-neutral-600 mb-3">
+                          {product.weight} {product.weight_unit} • {product.quality}
+                        </p>
+
+                        <p className="text-3xl font-extrabold text-green-600">
+                          ₹{product.price}
+                        </p>
+                        <p className="text-xs text-neutral-500 mb-3">
+                          per {product.unit}
+                        </p>
+
+                        {/* QUANTITY */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <input
+                            type="number"
+                            min="1"
+                            max={product.quantity_available}
+                            value={selectedQuantities[product._id] || 1}
+                            onChange={(e) =>
+                              handleQuantityChange(product._id, e.target.value)
+                            }
+                            className="w-20 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-400"
+                          />
+                          <span className="text-xs text-neutral-500">
+                            max {product.quantity_available}
+                          </span>
                         </div>
 
-                        {/* Farmer Info */}
-                        {product.farmer_id && (
-                          <div className="text-xs text-neutral-600 mb-3 pb-3 border-b">
-                            <p className="font-semibold">{product.farmer_id?.farm_name}</p>
-                          </div>
-                        )}
+                        <button
+                          onClick={() => handleAddToCart(product)}
+                          disabled={product.quantity_available === 0}
+                          className="w-full flex items-center justify-center gap-2
+                          bg-gradient-to-r from-green-600 to-emerald-500
+                          text-white py-3 rounded-xl font-semibold
+                          hover:scale-[1.02] active:scale-95 transition
+                          disabled:opacity-50"
+                        >
+                          <FaShoppingCart /> Add to Cart
+                        </button>
 
-                        {/* Price and Cart */}
-                        <div className="flex items-center justify-between gap-2">
-                          <div>
-                            <p className="text-2xl font-bold text-primary-600">₹{product.price}</p>
-                            <p className="text-xs text-neutral-500">per {product.unit}</p>
-                          </div>
-                        </div>
-
-                        {/* Quantity Selector and Add to Cart */}
-                        <div className="mt-4 space-y-2">
-                          <div className="flex items-center gap-2">
-                            <label className="text-sm font-semibold text-neutral-700">Qty:</label>
-                            <input
-                              type="number"
-                              min="1"
-                              max={product.quantity_available}
-                              value={selectedQuantities[product._id] || 1}
-                              onChange={(e) => handleQuantityChange(product._id, e.target.value)}
-                              className="w-16 px-2 py-1 border border-neutral-300 rounded text-sm"
-                            />
-                            <span className="text-xs text-neutral-600">max {product.quantity_available}</span>
-                          </div>
-
-                          <button
-                            onClick={() => handleAddToCart(product)}
-                            disabled={product.quantity_available === 0}
-                            className="w-full flex items-center justify-center gap-2 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            <FaShoppingCart /> Add to Cart
-                          </button>
-                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Pagination */}
+                {/* PAGINATION */}
                 {totalPages > 1 && (
-                  <div className="flex justify-center gap-2 mt-8">
+                  <div className="flex justify-center gap-2 mt-10">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                       <button
                         key={page}
@@ -317,10 +303,10 @@ const ProductsPage = () => {
                           setCurrentPage(page);
                           window.scrollTo(0, 0);
                         }}
-                        className={`px-4 py-2 rounded ${
+                        className={`px-4 py-2 rounded-lg ${
                           currentPage === page
-                            ? 'bg-primary-600 text-white'
-                            : 'border border-neutral-300 hover:bg-neutral-100'
+                            ? 'bg-green-600 text-white'
+                            : 'border hover:bg-neutral-100'
                         }`}
                       >
                         {page}
@@ -328,6 +314,7 @@ const ProductsPage = () => {
                     ))}
                   </div>
                 )}
+
               </>
             )}
           </div>

@@ -151,7 +151,8 @@ export const orderAPI = {
   },
 
   getOrders: async (role) => {
-    return apiCall(`/orders?role=${role}`, {
+    const queryRole = role || 'consumer';
+    return apiCall(`/orders?role=${queryRole}`, {
       method: 'GET',
     });
   },

@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { FaShoppingBag, FaTruck, FaUser, FaCog } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import MyProfile from '../../components/MyProfile';
 import ProfileSettings from '../../components/ProfileSettings';
-import { authAPI } from '../../utils/api';
+import { authAPI, orderAPI } from '../../utils/api';
 
 const ConsumerDashboard = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
   const [userProfile, setUserProfile] = useState(null);
+  const [userOrders, setUserOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshProfile, setRefreshProfile] = useState(false);
 
   useEffect(() => {
     fetchUserData();
   }, [refreshProfile]);
+
+  useEffect(() => {
+    if (activeTab === 'orders') {
+      fetchOrders();
+    }
+  }, [activeTab]);
 
   const fetchUserData = async () => {
     try {
@@ -28,8 +37,36 @@ const ConsumerDashboard = () => {
     }
   };
 
+  const fetchOrders = async () => {
+    try {
+      const response = await orderAPI.getOrders('consumer');
+      if (response.success) {
+        setUserOrders(response.data || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch orders:', err);
+    }
+  };
+
   const handleProfileUpdate = () => {
     setRefreshProfile(!refreshProfile);
+  };
+
+  const getStatusColor = (status) => {
+    const colors = {
+      pending: 'bg-yellow-100 text-yellow-700',
+      confirmed: 'bg-blue-100 text-blue-700',
+      assigned: 'bg-blue-100 text-blue-700',
+      picked_up: 'bg-orange-100 text-orange-700',
+      in_transit: 'bg-purple-100 text-purple-700',
+      delivered: 'bg-green-100 text-green-700',
+      cancelled: 'bg-red-100 text-red-700'
+    };
+    return colors[status] || 'bg-gray-100 text-gray-700';
+  };
+
+  const handleViewOrder = (orderId) => {
+    navigate(`/orders/${orderId}`);
   };
 
   if (loading) return <div className="section-padding text-center text-xl">Loading...</div>;
@@ -88,23 +125,43 @@ const ConsumerDashboard = () => {
             <div className="card">
               <h2 className="text-2xl font-bold mb-6">Your Orders</h2>
               <div className="space-y-4">
-                <div className="border rounded-lg p-4 hover:shadow-md transition">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold text-lg">ORD-123456</p>
-                      <p className="text-neutral-600 text-sm">3 items from Fresh Farm</p>
+                {userOrders && userOrders.length > 0 ? (
+                  userOrders.map(order => (
+                    <div 
+                      key={order._id} 
+                      className="border rounded-lg p-4 hover:shadow-md transition cursor-pointer"
+                      onClick={() => handleViewOrder(order._id)}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-semibold text-lg">{order.order_number}</p>
+                          <p className="text-neutral-600 text-sm">
+                            {order.items?.length || 0} items from {typeof order.farmer_id === 'object' ? order.farmer_id.farm_name || 'Farmer' : 'Farm'}
+                          </p>
+                          <p className="text-xs text-neutral-500 mt-1">
+                            {new Date(order.created_at).toLocaleDateString('en-IN')}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">₹{order.total_price}</p>
+                          <span className={`px-3 py-1 rounded text-xs font-semibold inline-block mt-2 ${getStatusColor(order.order_status)}`}>
+                            {order.order_status.replace('_', ' ').toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-green-600">₹850</p>
-                      <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold">
-                        In Transit
-                      </span>
-                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-neutral-600">
+                    <p>No orders yet. Start shopping!</p>
+                    <button
+                      onClick={() => navigate('/products')}
+                      className="mt-4 bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700"
+                    >
+                      Browse Products
+                    </button>
                   </div>
-                </div>
-                <div className="text-center py-8 text-neutral-600">
-                  <p>No other orders yet. Start shopping!</p>
-                </div>
+                )}
               </div>
             </div>
           )}

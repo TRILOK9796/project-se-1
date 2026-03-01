@@ -244,6 +244,16 @@ const createOrder = async (req, res) => {
         delivery_charge: deliveryCharge,
         total_price: orderData.subtotal + Math.round((orderData.subtotal * 0.05)) + deliveryCharge,
         payment_method,
+        pickup_location: {
+          street: farmer.address || '',
+          city: farmer.city || '',
+          state: farmer.state || '',
+          pincode: farmer.pincode || '',
+          location: farmer.location || { 
+            type: 'Point',
+            coordinates: [72.8777, 19.0760]
+          }
+        },
         delivery_address: {
           street: delivery_address.street || '',
           city: delivery_address.city || '',
@@ -314,9 +324,11 @@ const createOrder = async (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const { role } = req.query; // 'consumer', 'farmer', 'delivery'
+    const user = await User.findById(req.user.id);
     let query = {};
+    let userRole = role || user.user_type;
 
-    if (role === 'consumer') {
+    if (userRole === 'consumer') {
       const consumer = await Consumer.findOne({ user_id: req.user.id });
       if (!consumer) {
         return res.status(404).json({
@@ -325,7 +337,7 @@ const getOrders = async (req, res) => {
         });
       }
       query = { consumer_id: consumer._id };
-    } else if (role === 'farmer') {
+    } else if (userRole === 'farmer') {
       const farmer = await Farmer.findOne({ user_id: req.user.id });
       if (!farmer) {
         return res.status(404).json({
@@ -334,7 +346,7 @@ const getOrders = async (req, res) => {
         });
       }
       query = { farmer_id: farmer._id };
-    } else if (role === 'delivery') {
+    } else if (userRole === 'delivery_partner') {
       const deliveryPartner = await DeliveryPartner.findOne({ user_id: req.user.id });
       if (!deliveryPartner) {
         return res.status(404).json({
@@ -343,6 +355,11 @@ const getOrders = async (req, res) => {
         });
       }
       query = { delivery_partner_id: deliveryPartner._id };
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid role'
+      });
     }
 
     const orders = await Order.find(query)

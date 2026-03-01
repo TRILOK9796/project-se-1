@@ -1,108 +1,163 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaLeaf, FaTruck, FaShoppingCart, FaArrowRight, FaStar } from 'react-icons/fa';
+import {
+  FaLeaf,
+  FaTruck,
+  FaShoppingCart,
+  FaArrowRight,
+  FaStar
+} from 'react-icons/fa';
 
 const HomePage = () => {
   const navigate = useNavigate();
 
   const features = [
     {
-      icon: <FaLeaf className="text-3xl" />,
+      icon: <FaLeaf />,
       title: 'Farm Fresh',
-      description: 'Directly from farms to your doorstep. Fresh vegetables and fruits every day.'
+      description:
+        'Directly sourced from farmers. No storage delays, only fresh harvest.',
     },
     {
-      icon: <FaTruck className="text-3xl" />,
+      icon: <FaTruck />,
       title: 'Fast Delivery',
-      description: 'Get your orders delivered within 24-48 hours. Quick and reliable service.'
+      description:
+        'Reliable delivery within 24–48 hours from farm to doorstep.',
     },
     {
-      icon: <FaShoppingCart className="text-3xl" />,
+      icon: <FaShoppingCart />,
       title: 'Easy Shopping',
-      description: 'Browse, select, and order from multiple farmers. One-click checkout.'
-    }
+      description:
+        'Browse multiple farms and order seamlessly in seconds.',
+    },
   ];
 
   const topFarmers = [
-    { id: 1, name: 'Green Valley Farm', rating: 4.8, orders: 250 },
-    { id: 2, name: 'Organic Harvest', rating: 4.7, orders: 180 },
-    { id: 3, name: 'Fresh Fields', rating: 4.9, orders: 320 },
+    { id: 1, name: 'Green Valley Farm', rating: 4.8, orders: 250, image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
+    { id: 2, name: 'Organic Harvest', rating: 4.7, orders: 180, image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=80' },
+    { id: 3, name: 'Fresh Fields', rating: 4.9, orders: 320, image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=400&q=80' },
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="gradient-bg text-white py-20">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Fresh Produce, Directly From Farmers
-              </h1>
-              <p className="text-lg mb-8 text-blue-100">
-                Buy fresh vegetables and fruits directly from local farmers. No middlemen, just pure quality produce delivered to your doorstep.
-              </p>
-              <div className="flex gap-4 flex-wrap">
-                <button
-                  onClick={() => navigate('/register')}
-                  className="btn btn-lg bg-white text-primary-600 hover:bg-neutral-100 font-bold"
-                >
-                  <span className="flex items-center gap-2">
-                    Get Started <FaArrowRight />
-                  </span>
-                </button>
-                <button
-                  onClick={() => navigate('/products')}
-                  className="btn btn-lg btn-outline border-white text-white hover:bg-white hover:text-primary-600"
-                >
-                  <span className="flex items-center gap-2">
-                    Browse Products <FaArrowRight />
-                  </span>
-                </button>
-              </div>
+    <div className="min-h-screen overflow-hidden">
+
+      {/* ================= HERO ================= */}
+      <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-emerald-500 text-white py-24">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,white,transparent_60%)]" />
+
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative">
+
+          {/* LEFT */}
+          <div>
+            <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-6">
+              Fresh Produce <br />
+              <span className="text-emerald-200">
+                Directly From Farmers
+              </span>
+            </h1>
+
+            <p className="text-lg text-white/90 mb-10 max-w-xl">
+              Skip middlemen and buy fresh vegetables & fruits straight from
+              local farms. Better prices, better quality, healthier living.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => navigate('/register')}
+                className="px-7 py-3 rounded-xl bg-white text-primary-600 font-bold hover:bg-neutral-100 transition flex items-center gap-2 shadow-lg"
+              >
+                Get Started <FaArrowRight />
+              </button>
+
+              <button
+                onClick={() => navigate('/products')}
+                className="px-7 py-3 rounded-xl border border-white/80 hover:bg-white hover:text-primary-600 transition flex items-center gap-2"
+              >
+                Browse Products <FaArrowRight />
+              </button>
             </div>
-            <div className="hidden lg:block">
-              <img
-                src="https://images.unsplash.com/photo-1488459716781-8d54d7d64549?w=600&h=600&fit=crop"
-                alt="Fresh Products"
-                className="rounded-2xl shadow-2xl"
-              />
-            </div>
+          </div>
+
+          {/* RIGHT IMAGE */}
+          <div className="hidden lg:block relative">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3MRBY3CNpxA_zzEl8fdtwP74sASAeH6g1ZQ&s"
+              alt="Fresh produce"
+              className="rounded-3xl shadow-2xl relative z-10"
+            />
+            <div className="absolute -bottom-6 -right-6 w-full h-full bg-white/10 rounded-3xl blur-xl" />
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="section-padding">
-        <div className="container-custom">
-          <h2 className="text-4xl font-bold text-center mb-16">Why Choose FreshFarm?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="card">
-                <div className="text-primary-500 mb-4">{feature.icon}</div>
-                <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-neutral-600">{feature.description}</p>
+      {/* ================= FEATURES ================= */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+
+          <h2 className="text-4xl font-bold mb-16">
+            Why Choose FreshFarm?
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {features.map((feature, i) => (
+              <div
+                key={i}
+                className="p-8 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 bg-white"
+              >
+                <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-primary-50 text-primary-600 text-2xl mb-5 mx-auto">
+                  {feature.icon}
+                </div>
+
+                <h3 className="text-xl font-bold mb-3">
+                  {feature.title}
+                </h3>
+
+                <p className="text-neutral-600 text-sm">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Top Farmers Section */}
-      <section className="section-padding bg-neutral-50">
-        <div className="container-custom">
-          <h2 className="text-4xl font-bold text-center mb-16">Top Rated Farmers</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* ================= TOP FARMERS ================= */}
+      <section className="py-24 bg-neutral-50">
+        <div className="max-w-6xl mx-auto px-6">
+
+          <h2 className="text-4xl font-bold text-center mb-16">
+            Top Rated Farmers
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
             {topFarmers.map((farmer) => (
-              <div key={farmer.id} className="card-hover">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full mb-4"></div>
-                <h3 className="text-2xl font-bold mb-2">{farmer.name}</h3>
-                <div className="flex items-center gap-2 mb-3">
+              <div
+                key={farmer.id}
+                className="bg-white rounded-2xl p-6 border border-neutral-100 shadow-sm hover:shadow-xl transition hover:-translate-y-1"
+              >
+               <div className="w-16 h-16 rounded-full overflow-hidden mb-5 border-2 border-white shadow">
+  <img
+    src={farmer.image}   // <-- image from data
+    alt={farmer.name}
+    className="w-full h-full object-cover"
+  />
+</div>
+
+                <h3 className="text-xl font-bold mb-2">
+                  {farmer.name}
+                </h3>
+
+                <div className="flex items-center gap-2 mb-5">
                   <FaStar className="text-yellow-400" />
-                  <span className="font-bold">{farmer.rating}</span>
-                  <span className="text-neutral-600">({farmer.orders} orders)</span>
+                  <span className="font-semibold">
+                    {farmer.rating}
+                  </span>
+                  <span className="text-neutral-500 text-sm">
+                    ({farmer.orders} orders)
+                  </span>
                 </div>
-                <button className="btn btn-primary btn-sm w-full">
+
+                <button className="w-full py-2 rounded-xl bg-primary-600 text-white hover:bg-primary-700 transition font-semibold">
                   View Products
                 </button>
               </div>
@@ -111,23 +166,29 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="section-padding gradient-bg text-white">
-        <div className="container-custom text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to eat fresh?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join thousands of customers who are already enjoying fresh, organic produce from local farmers.
+      {/* ================= CTA ================= */}
+      <section className="py-24 bg-gradient-to-r from-primary-600 to-emerald-500 text-white text-center">
+        <div className="max-w-3xl mx-auto px-6">
+
+          <h2 className="text-4xl font-bold mb-6">
+            Ready to eat fresh?
+          </h2>
+
+          <p className="text-lg text-white/90 mb-10">
+            Join thousands already buying directly from farmers and
+            enjoying healthier, fresher food every day.
           </p>
+
           <button
             onClick={() => navigate('/register')}
-            className="btn btn-lg bg-white text-primary-600 hover:bg-neutral-100 font-bold"
+            className="px-8 py-4 rounded-xl bg-white text-primary-600 font-bold hover:bg-neutral-100 transition shadow-lg flex items-center gap-2 mx-auto"
           >
-            <span className="flex items-center gap-2">
-              Start Shopping Now <FaArrowRight />
-            </span>
+            Start Shopping Now <FaArrowRight />
           </button>
+
         </div>
       </section>
+
     </div>
   );
 };
