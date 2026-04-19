@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-19T10:00:00.000Z" agent="Mozilla/5.0" version="24.0.0">
+  <diagram name="Class Diagram" id="c7558073-8eeac020-1d20-4991-531f-0abc8de50d9b">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="transparent" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- User Base Class -->
+        <mxCell id="USER" value="User" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="50" y="50" width="220" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="USER-ATTRS" value="- user_id: ObjectId&#10;- user_type: String&#10;- email: String&#10;- phone: String&#10;- password_hash: String&#10;- name: String&#10;- profile_pic: String&#10;- is_active: Boolean&#10;- is_verified: Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="USER" vertex="1">
+          <mxGeometry y="26" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="USER-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="USER" vertex="1">
+          <mxGeometry y="176" width="220" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="USER-METHODS" value="+ registerUser()&#10;+ loginUser()&#10;+ updateProfile()&#10;+ verifyEmail()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="USER" vertex="1">
+          <mxGeometry y="177" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Farmer Class -->
+        <mxCell id="FARMER" value="Farmer" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="50" y="400" width="220" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="FARMER-ATTRS" value="- farmer_id: ObjectId&#10;- user_id: ObjectId&#10;- farm_name: String&#10;- farm_size: Number&#10;- location: Object&#10;- address: Object&#10;- avg_rating: Number&#10;- total_orders: Number&#10;- total_revenue: Number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="FARMER" vertex="1">
+          <mxGeometry y="26" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="FARMER-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="FARMER" vertex="1">
+          <mxGeometry y="176" width="220" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FARMER-METHODS" value="+ createProduct()&#10;+ updateProduct()&#10;+ viewOrders()&#10;+ acceptOrder()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="FARMER" vertex="1">
+          <mxGeometry y="177" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Consumer Class -->
+        <mxCell id="CONSUMER" value="Consumer" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="350" y="400" width="220" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="CONSUMER-ATTRS" value="- consumer_id: ObjectId&#10;- user_id: ObjectId&#10;- addresses: Array&#10;- saved_farmers: Array&#10;- favorite_products: Array&#10;- total_orders: Number&#10;- total_spent: Number&#10;- preferences: Object" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="CONSUMER" vertex="1">
+          <mxGeometry y="26" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="CONSUMER-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="CONSUMER" vertex="1">
+          <mxGeometry y="176" width="220" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CONSUMER-METHODS" value="+ addToCart()&#10;+ placeOrder()&#10;+ makePayment()&#10;+ rateProduct()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="CONSUMER" vertex="1">
+          <mxGeometry y="177" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- DeliveryPartner Class -->
+        <mxCell id="DELIVERY" value="DeliveryPartner" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="650" y="400" width="240" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="DELIVERY-ATTRS" value="- partner_id: ObjectId&#10;- user_id: ObjectId&#10;- vehicle_type: String&#10;- vehicle_number: String&#10;- license_number: String&#10;- location: Object&#10;- rating: Number&#10;- total_deliveries: Number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="DELIVERY" vertex="1">
+          <mxGeometry y="26" width="240" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="DELIVERY-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="DELIVERY" vertex="1">
+          <mxGeometry y="176" width="240" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DELIVERY-METHODS" value="+ acceptDelivery()&#10;+ updateLocation()&#10;+ completeDelivery()&#10;+ viewEarnings()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="DELIVERY" vertex="1">
+          <mxGeometry y="177" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Product Class -->
+        <mxCell id="PRODUCT" value="Product" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="950" y="50" width="240" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="PRODUCT-ATTRS" value="- product_id: ObjectId&#10;- farmer_id: ObjectId&#10;- name: String&#10;- description: String&#10;- category: String&#10;- price: Number&#10;- unit: String&#10;- weight: Number&#10;- quality: String&#10;- stock_quantity: Number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="PRODUCT" vertex="1">
+          <mxGeometry y="26" width="240" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="PRODUCT-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="PRODUCT" vertex="1">
+          <mxGeometry y="176" width="240" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PRODUCT-METHODS" value="+ updatePrice()&#10;+ updateStock()&#10;+ addReview()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="PRODUCT" vertex="1">
+          <mxGeometry y="177" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Order Class -->
+        <mxCell id="ORDER" value="Order" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="950" y="400" width="260" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="ORDER-ATTRS" value="- order_id: ObjectId&#10;- order_number: String&#10;- consumer_id: ObjectId&#10;- farmer_id: ObjectId&#10;- delivery_partner_id: ObjectId&#10;- items: Array&#10;- total_price: Number&#10;- payment_status: String&#10;- status: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="ORDER" vertex="1">
+          <mxGeometry y="26" width="260" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="ORDER-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="ORDER" vertex="1">
+          <mxGeometry y="186" width="260" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ORDER-METHODS" value="+ createOrder()&#10;+ updateStatus()&#10;+ cancelOrder()&#10;+ assignDelivery()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="ORDER" vertex="1">
+          <mxGeometry y="187" width="260" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Payment Class -->
+        <mxCell id="PAYMENT" value="Payment" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1280" y="50" width="240" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="PAYMENT-ATTRS" value="- payment_id: ObjectId&#10;- order_id: ObjectId&#10;- consumer_id: ObjectId&#10;- amount: Number&#10;- currency: String&#10;- payment_method: String&#10;- transaction_id: String&#10;- status: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="PAYMENT" vertex="1">
+          <mxGeometry y="26" width="240" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="PAYMENT-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="PAYMENT" vertex="1">
+          <mxGeometry y="176" width="240" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PAYMENT-METHODS" value="+ processPayment()&#10;+ refundPayment()&#10;+ verifyTransaction()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="PAYMENT" vertex="1">
+          <mxGeometry y="177" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Review Class -->
+        <mxCell id="REVIEW" value="Review" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="350" y="750" width="240" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="REVIEW-ATTRS" value="- review_id: ObjectId&#10;- order_id: ObjectId&#10;- reviewer_id: ObjectId&#10;- reviewer_type: String&#10;- rating: Number&#10;- title: String&#10;- comment: String&#10;- verified_purchase: Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="REVIEW" vertex="1">
+          <mxGeometry y="26" width="240" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="REVIEW-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="REVIEW" vertex="1">
+          <mxGeometry y="176" width="240" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="REVIEW-METHODS" value="+ submitReview()&#10;+ updateRating()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="REVIEW" vertex="1">
+          <mxGeometry y="177" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Admin Class -->
+        <mxCell id="ADMIN" value="Admin" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;collapsed=0;marginBottom=0;rounded=0;shadow=0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="650" y="750" width="240" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="ADMIN-ATTRS" value="- admin_id: ObjectId&#10;- user_id: ObjectId&#10;- role: String&#10;- permissions: Array&#10;- created_at: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="ADMIN" vertex="1">
+          <mxGeometry y="26" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ADMIN-SEP" value="" style="line;strokeWidth=1;rotatable=0;pointerEvents=0;fillColor=none;portConstraint=eastwest;" parent="ADMIN" vertex="1">
+          <mxGeometry y="146" width="240" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ADMIN-METHODS" value="+ manageUsers()&#10;+ viewAnalytics()&#10;+ handleDisputes()&#10;+ approveDocuments()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="ADMIN" vertex="1">
+          <mxGeometry y="147" width="240" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships - Inheritance -->
+        <mxCell id="INHERITS-FARMER" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;strokeWidth=2;dashed=1;" parent="1" source="FARMER" target="USER" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="INHERITS-CONSUMER" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;strokeWidth=2;dashed=1;" parent="1" source="CONSUMER" target="USER" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="INHERITS-DELIVERY" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;strokeWidth=2;dashed=1;" parent="1" source="DELIVERY" target="USER" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="INHERITS-ADMIN" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;strokeWidth=2;dashed=1;" parent="1" source="ADMIN" target="USER" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Relationships - Associations -->
+        <mxCell id="FARMER-CREATES-PRODUCT" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeWidth=2;" parent="1" source="FARMER" target="PRODUCT" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="CONSUMER-PLACES-ORDER" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeWidth=2;" parent="1" source="CONSUMER" target="ORDER" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ORDER-HAS-PAYMENT" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeWidth=2;" parent="1" source="ORDER" target="PAYMENT" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ORDER-HAS-REVIEW" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeWidth=2;" parent="1" source="ORDER" target="REVIEW" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="DELIVERY-TAKES-ORDER" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeWidth=2;" parent="1" source="DELIVERY" target="ORDER" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
